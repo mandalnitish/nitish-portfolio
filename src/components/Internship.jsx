@@ -11,8 +11,14 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0 },
+  hidden: (index) => ({
+    opacity: 0,
+    x: index % 2 === 0 ? 30 : -30, // alternating right / left
+  }),
+  visible: {
+    opacity: 1,
+    x: 0,
+  },
 };
 
 export default function Internship() {
@@ -31,10 +37,13 @@ export default function Internship() {
             Internship & Career Goals
           </motion.h2>
 
+          {/* Paragraph */}
           <motion.p
+            custom={0}
             variants={itemVariants}
             initial="hidden"
             whileInView="visible"
+            transition={{ duration: 0.4, ease: "easeOut" }}
             viewport={{ once: true }}
             className="mb-6 text-gray-700 dark:text-gray-300 leading-relaxed"
           >
@@ -49,7 +58,7 @@ export default function Internship() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="space-y-3"
+            className="space-y-4"
           >
             {[
               "Strong foundation in React, JavaScript, and modern UI design",
@@ -59,16 +68,35 @@ export default function Internship() {
             ].map((item, index) => (
               <motion.li
                 key={index}
+                custom={index}
                 variants={itemVariants}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ y: -4, scale: 1.02 }}
                 className="
-                  pl-4 border-l-2
+                  group relative overflow-hidden
+                  pl-5 py-3 rounded-xl
+                  border-l-2
                   border-gray-300 dark:border-gray-600
                   text-gray-700 dark:text-gray-300
+                  hover:shadow-md
+                  transition-all
+                  cursor-default
                 "
               >
-                {item}
+                {/* Gradient hover overlay */}
+                <span
+                  aria-hidden
+                  className="
+                    absolute inset-0 opacity-0 group-hover:opacity-100
+                    transition-opacity duration-300
+                    bg-gradient-to-r
+                    from-indigo-500/10 via-purple-500/10 to-pink-500/10
+                  "
+                />
+
+                <span className="relative z-10">
+                  {item}
+                </span>
               </motion.li>
             ))}
           </motion.ul>

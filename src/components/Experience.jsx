@@ -1,85 +1,111 @@
 import { motion } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function Experience() {
   return (
     <AnimatedSection>
-      <section className="py-16 sm:py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="text-2xl sm:text-3xl font-bold mb-8"
+            className="text-2xl sm:text-3xl font-bold mb-12"
           >
-            Education & Experience
+            Experience
           </motion.h2>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="space-y-4"
-          >
+          <div className="grid md:grid-cols-2 gap-8">
+
             {/* Education */}
             <motion.div
-              variants={itemVariants}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              viewport={{ once: true }}
               className="
-                p-5 rounded-lg border
-                bg-white/80 dark:bg-gray-800/80
-                border-gray-200 dark:border-gray-700
-                text-gray-700 dark:text-gray-300
+                group relative overflow-hidden rounded-2xl p-7
+                bg-white/70 dark:bg-gray-900/60
+                backdrop-blur border
+                border-gray-200/70 dark:border-gray-700/70
+                shadow-sm hover:shadow-lg
+                transition-shadow
+                cursor-default
               "
             >
-              <strong className="block text-gray-900 dark:text-gray-100 mb-1">
-                Bachelor of Engineering (Computer)
-              </strong>
-              <span className="block">
-                Engineering Student (Pre-final Year)
-              </span>
-              <span className="block text-sm text-gray-500 dark:text-gray-400">
-                Government Engineering College Bharuch, Gujarat Technological University
-              </span>
+              {/* Hover Gradient */}
+              <div
+                aria-hidden
+                className="
+                  absolute inset-0 opacity-0 group-hover:opacity-100
+                  transition-opacity duration-300
+                  bg-gradient-to-br
+                  from-indigo-500/15 via-purple-500/15 to-pink-500/15
+                "
+              />
+
+              <div className="relative z-10">
+                <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                  Education
+                </span>
+                <h3 className="text-xl font-semibold mt-2 mb-2">
+                  Bachelor of Engineering (Computer)
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300">
+                  Engineering Student (Pre-final Year)
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  Government Engineering College Bharuch · GTU
+                </p>
+              </div>
             </motion.div>
 
             {/* Experience */}
             <motion.div
-              variants={itemVariants}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              viewport={{ once: true }}
               className="
-                p-5 rounded-lg border
-                bg-white/80 dark:bg-gray-800/80
-                border-gray-200 dark:border-gray-700
-                text-gray-700 dark:text-gray-300
+                group relative overflow-hidden rounded-2xl p-7
+                bg-white/70 dark:bg-gray-900/60
+                backdrop-blur border
+                border-gray-200/70 dark:border-gray-700/70
+                shadow-sm hover:shadow-lg
+                transition-shadow
+                cursor-default
               "
             >
-              <strong className="block text-gray-900 dark:text-gray-100 mb-1">
-                Full-Stack Developer (Project Experience)
-              </strong>
-              <span className="block">
-                Built and deployed production-ready web applications using
-                React, Firebase, Vercel, Render, and AI APIs.
-              </span>
+              {/* Hover Gradient */}
+              <div
+                aria-hidden
+                className="
+                  absolute inset-0 opacity-0 group-hover:opacity-100
+                  transition-opacity duration-300
+                  bg-gradient-to-br
+                  from-indigo-500/15 via-purple-500/15 to-pink-500/15
+                "
+              />
+
+              <div className="relative z-10">
+                <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                  Development
+                </span>
+                <h3 className="text-xl font-semibold mt-2 mb-2">
+                  Full-Stack Developer
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300">
+                  Built and deployed production-ready applications using React,
+                  Firebase, Vercel, Render, and AI APIs.
+                </p>
+              </div>
             </motion.div>
-          </motion.div>
+
+          </div>
 
         </div>
       </section>

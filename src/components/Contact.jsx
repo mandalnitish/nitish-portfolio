@@ -38,7 +38,7 @@ export default function Contact() {
       <section id="contact" className="py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
 
-          {/* Heading */}
+          {/* Heading (unchanged) */}
           <motion.h2
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -49,11 +49,15 @@ export default function Contact() {
             Contact Me
           </motion.h2>
 
-          {/* Form Card */}
+          {/* Form Card → FROM RIGHT */}
           <motion.form
             onSubmit={handleSubmit}
-            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={
+              reduceMotion
+                ? false
+                : { opacity: 0, x: 40 }   // ✅ changed
+            }
+            whileInView={{ opacity: 1, x: 0 }} // ✅ changed
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
             viewport={{ once: true }}
             className="
