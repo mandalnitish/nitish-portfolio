@@ -24,6 +24,12 @@ import AdminInbox from "./components/AdminInbox";
 import AdminLogin from "./components/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// Renamed to avoid ad blocker issues
+import PrivacyPage from "./components/PrivacyPage";
+import TermsPage from "./components/TermsPage";
+
+import ScrollToTop from "./components/ScrollToTop";
+
 /* ---------- Pages ---------- */
 
 function MainSite() {
@@ -31,7 +37,6 @@ function MainSite() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
       <Hero />
@@ -53,7 +58,6 @@ function AdminPage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
       <AdminInbox />
@@ -71,11 +75,11 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         {/* Public */}
         <Route path="/" element={<MainSite />} />
+        <Route path="/privacy-policy" element={<PrivacyPage />} />
+        <Route path="/terms-and-conditions" element={<TermsPage />} />
 
-        {/* Admin login */}
+        {/* Admin */}
         <Route path="/admin-login" element={<AdminLogin />} />
-
-        {/* Protected admin */}
         <Route
           path="/admin"
           element={
@@ -93,8 +97,6 @@ function AnimatedRoutes() {
 
 function Layout() {
   const location = useLocation();
-
-  // Hide navbar + footer on admin routes
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
@@ -111,6 +113,7 @@ function Layout() {
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout />
     </Router>
   );

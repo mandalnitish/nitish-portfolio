@@ -1,36 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+  /* -------------------- State -------------------- */
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
   const [hidden, setHidden] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
-  // System theme sync
+  const lastScrollY = useRef(0);
+  const navigate = useNavigate();
+
+  /* -------------------- System theme sync -------------------- */
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
+
     const applyTheme = () =>
       document.documentElement.classList.toggle("dark", mq.matches);
 
     applyTheme();
     mq.addEventListener("change", applyTheme);
+
     return () => mq.removeEventListener("change", applyTheme);
   }, []);
 
-  // Active link + hide-on-scroll logic
+  /* -------------------- Scroll logic -------------------- */
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
 
       // Hide navbar on scroll down
-      setHidden(currentY > lastScrollY && currentY > 80);
-      setLastScrollY(currentY);
+      setHidden(currentY > lastScrollY.current && currentY > 80);
+      lastScrollY.current = currentY;
 
       // Active section detection
-      const sections = document.querySelectorAll("section[id]");
-      sections.forEach(section => {
-        const top = section.offsetTop - 100;
+      document.querySelectorAll("section[id]").forEach((section) => {
+        const top = section.offsetTop - 120;
         const bottom = top + section.offsetHeight;
 
         if (currentY >= top && currentY < bottom) {
@@ -39,14 +44,35 @@ export default function Navbar() {
       });
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
+  /* -------------------- Navigation helpers -------------------- */
+  const goToSection = (id) => {
+    setOpen(false);
+    navigate("/");
+
+    setTimeout(() => {
+      const el = document.querySelector(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        setActive(id);
+      }
+    }, 80);
+  };
+
+  const scrollHome = () => {
+    setOpen(false);
+    navigate("/");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  /* -------------------- Nav links -------------------- */
   const links = [
-    { href: "#projects", label: "Projects" },
-    { href: "#blog", label: "Blog" },
-    { href: "#contact", label: "Contact" },
+    { id: "#projects", label: "Projects" },
+    { id: "#blog", label: "Blog" },
+    { id: "#contact", label: "Contact" },
   ];
 
   return (
@@ -61,29 +87,56 @@ export default function Navbar() {
         border-b border-white/20 dark:border-gray-700
       "
     >
+      {/* -------------------- Navbar Container -------------------- */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-
-        {/* Animated Logo */}
-        <motion.a
-          href="#"
-          onClick={() => setOpen(false)}
-          whileHover={{ scale: 1.08 }}
-          transition={{ type: "spring", stiffness: 300 }}
+        {/* -------------------- Logo -------------------- */}
+        <motion.button
+          onClick={scrollHome}
+          aria-label="Go to homepage"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          whileHover={{ scale: 1.1 }}
           className="
-            font-bold text-lg
-            text-gray-900 dark:text-gray-100
-            cursor-pointer
+            relative flex items-center
+            bg-transparent focus:outline-none
+            group
           "
         >
-          Nitish Mandal
-        </motion.a>
+          {/* Glow */}
+          <span
+            aria-hidden
+            className="
+              absolute inset-0 rounded-xl
+              opacity-0 group-hover:opacity-100
+              transition-opacity duration-300
+              bg-gradient-to-br
+              from-indigo-500/30 via-purple-500/30 to-pink-500/30
+              blur-lg
+            "
+          />
 
-        {/* Desktop Menu */}
+          {/* Logo image */}
+          <img
+            src="/logo.png"
+            alt="Nitish Mandal logo"
+            className="
+              relative z-10
+              h-8 sm:h-9 md:h-10
+              w-auto
+              dark:invert
+              select-none
+              pointer-events-none
+            "
+          />
+        </motion.button>
+
+        {/* -------------------- Desktop Menu -------------------- */}
         <div className="hidden md:flex items-center gap-8 relative">
-          {links.map(link => (
-            <a
-              key={link.href}
-              href={link.href}
+          {links.map((link) => (
+            <button
+              key={link.id}
+              onClick={() => goToSection(link.id)}
               className="
                 relative text-sm font-medium
                 text-gray-700 dark:text-gray-300
@@ -92,8 +145,7 @@ export default function Navbar() {
             >
               {link.label}
 
-              {/* Active indicator */}
-              {active === link.href && (
+              {active === link.id && (
                 <motion.span
                   layoutId="activeLink"
                   className="
@@ -103,11 +155,11 @@ export default function Navbar() {
                   "
                 />
               )}
-            </a>
+            </button>
           ))}
         </div>
 
-        {/* Hamburger Button */}
+        {/* -------------------- Hamburger -------------------- */}
         <button
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
@@ -131,7 +183,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* -------------------- Mobile Menu -------------------- */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -146,20 +198,21 @@ export default function Navbar() {
             "
           >
             <div className="flex flex-col px-6 py-4 gap-4">
-              {links.map(link => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
+              {links.map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => goToSection(link.id)}
                   className={`
-                    text-sm font-medium
-                    ${active === link.href
-                      ? "text-indigo-600 dark:text-indigo-400"
-                      : "text-gray-700 dark:text-gray-300"}
+                    text-sm font-medium text-left
+                    ${
+                      active === link.id
+                        ? "text-indigo-600 dark:text-indigo-400"
+                        : "text-gray-700 dark:text-gray-300"
+                    }
                   `}
                 >
                   {link.label}
-                </a>
+                </button>
               ))}
             </div>
           </motion.div>

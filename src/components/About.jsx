@@ -8,7 +8,6 @@ export default function About() {
     <AnimatedSection>
       <section className="py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-
           {/* Heading */}
           <motion.h2
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
@@ -22,17 +21,9 @@ export default function About() {
 
           {/* About Card */}
           <motion.div
-            initial={
-              reduceMotion
-                ? false
-                : { opacity: 0, x: 30 }   // slide from right
-            }
+            initial={reduceMotion ? false : { opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            whileHover={
-              reduceMotion
-                ? {}
-                : { y: -6, scale: 1.02 } // hover lift
-            }
+            whileHover={reduceMotion ? {} : { y: -6, scale: 1.02 }}
             transition={{ duration: 0.45, ease: "easeOut", delay: 0.1 }}
             viewport={{ once: true }}
             className="
@@ -64,13 +55,13 @@ export default function About() {
                 leading-relaxed text-base sm:text-lg
               "
             >
-              I am a Full-Stack Developer with hands-on experience in building
-              production-ready web systems. I focus on clean architecture,
-              secure data handling, and scalable deployments using modern
-              frontend frameworks, cloud platforms, and AI-powered backends.
+              I am a Computer Engineering student and Full-Stack Developer with
+              hands-on experience in building real-world web applications. I
+              enjoy working on clean UI design, secure data handling, and
+              scalable deployments using modern frontend frameworks, cloud
+              platforms, and AI-powered systems.
             </motion.p>
           </motion.div>
-
         </div>
       </section>
     </AnimatedSection>

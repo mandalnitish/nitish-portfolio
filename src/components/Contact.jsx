@@ -37,27 +37,29 @@ export default function Contact() {
     <AnimatedSection>
       <section id="contact" className="py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-
-          {/* Heading (unchanged) */}
+          {/* Heading */}
           <motion.h2
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
             viewport={{ once: true }}
-            className="text-2xl sm:text-3xl font-bold mb-8"
+            className="text-2xl sm:text-3xl font-bold mb-4"
           >
             Contact Me
           </motion.h2>
 
-          {/* Form Card → FROM RIGHT */}
+          {/* Trust Micro-copy (IMPORTANT for AdSense) */}
+          <p className="mb-8 text-sm text-gray-600 dark:text-gray-400 max-w-2xl">
+            Have a question, collaboration idea, or feedback? Feel free to reach
+            out using the form below. Your information is used only to respond to
+            your message and is never shared with third parties.
+          </p>
+
+          {/* Form Card */}
           <motion.form
             onSubmit={handleSubmit}
-            initial={
-              reduceMotion
-                ? false
-                : { opacity: 0, x: 40 }   // ✅ changed
-            }
-            whileInView={{ opacity: 1, x: 0 }} // ✅ changed
+            initial={reduceMotion ? false : { opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
             viewport={{ once: true }}
             className="
@@ -146,6 +148,19 @@ export default function Contact() {
                 {status}
               </motion.p>
             )}
+
+            {/* Privacy reassurance (VERY IMPORTANT) */}
+            <p className="pt-4 text-xs text-gray-500 dark:text-gray-400">
+              By submitting this form, you agree that your message will be stored
+              securely for communication purposes only. See our{" "}
+              <a
+                href="/privacy-policy"
+                className="underline hover:text-indigo-500"
+              >
+                Privacy Policy
+              </a>{" "}
+              for more details.
+            </p>
           </motion.form>
         </div>
       </section>
