@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-
+import AvailabilityBadge from "./AvailabilityBadge";
 export default function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -56,6 +56,10 @@ export default function Footer() {
             >
               Terms
             </Link>
+
+
+            
+            <AvailabilityBadge />
           </div>
         </motion.div>
 

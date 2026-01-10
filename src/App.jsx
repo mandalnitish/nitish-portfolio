@@ -30,6 +30,9 @@ import TermsPage from "./components/TermsPage";
 
 import ScrollToTop from "./components/ScrollToTop";
 
+import InteractiveSkills from "./components/InteractiveSkills";
+
+
 /* ---------- Pages ---------- */
 
 function MainSite() {
@@ -43,6 +46,7 @@ function MainSite() {
       <About />
       <Projects />
       <Skills />
+      <InteractiveSkills />
       <Certificates />
       <EducationTimeline />
       <Internship />
