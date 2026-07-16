@@ -29,7 +29,7 @@ const item = {
 export default function Skills() {
   return (
     <AnimatedSection>
-      <section className="py-20">
+      <section id="skills" className="py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
           <motion.h2

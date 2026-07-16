@@ -26,17 +26,17 @@ const PROJECTS = [
     description:
       "Organ Donor Management System — secure, role-based platform built with React, Firebase, and cloud deployment.",
     liveUrl: "https://odms.nitishmandal.site",
-    githubRepo: "mandalnitish/organ-donor-management-system",
+    githubRepo: "mandalnitish/odms_project",
     tech: ["React", "Firebase", "Tailwind"],
   },
   {
-    key: "nixbot",
-    title: "NixBot",
+    key: "nmai",
+    title: "NMAI",
     description:
-      "AI-powered chatbot platform with authentication, APIs, and cloud-hosted services.",
-    liveUrl: "https://nixbot.nitishmandal.site",
-    githubRepo: "mandalnitish/nixbot",
-    tech: ["React", "API", "AI"],
+      "A full-stack current affairs and competitive exam preparation platform featuring daily news, MCQ practice, user authentication, saved articles, and an admin panel.",
+    liveUrl: "https://www.nmai.in/",
+    githubRepo: "mandalnitish/nmai-project",
+    tech: ["React", "API", "MongoDB"],
   },
 ];
 

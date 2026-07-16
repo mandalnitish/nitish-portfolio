@@ -1,10 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -24,14 +19,23 @@ import AdminInbox from "./components/AdminInbox";
 import AdminLogin from "./components/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Renamed to avoid ad blocker issues
 import PrivacyPage from "./components/PrivacyPage";
 import TermsPage from "./components/TermsPage";
 
 import ScrollToTop from "./components/ScrollToTop";
-
 import InteractiveSkills from "./components/InteractiveSkills";
 
+// Pages
+import BlogPage from "./pages/BlogPage";
+import BlogPostPage from "./pages/BlogPostPage";
+import ProjectsPage from "./pages/ProjectsPage";
+import ProjectPostPage from "./pages/ProjectPostPage";
+import AboutPage from "./pages/AboutPage";
+import SkillsPage from "./pages/SkillsPage";
+
+// Consent + Analytics
+import AnalyticsGate from "./components/AnalyticsGate";
+import SiteNotice from "./components/SiteNotice";
 
 /* ---------- Pages ---------- */
 
@@ -79,6 +83,23 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         {/* Public */}
         <Route path="/" element={<MainSite />} />
+
+        {/* Full content pages */}
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/skills" element={<SkillsPage />} />
+
+        {/* Projects */}
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/projects/:slug" element={<ProjectPostPage />} />
+
+        {/* Blog */}
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
+
+        {/* Contact */}
+        <Route path="/contact" element={<Contact />} />
+
+        {/* Policy */}
         <Route path="/privacy-policy" element={<PrivacyPage />} />
         <Route path="/terms-and-conditions" element={<TermsPage />} />
 
@@ -101,13 +122,24 @@ function AnimatedRoutes() {
 
 function Layout() {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAdminRoute =
+    location.pathname === "/admin" || location.pathname.startsWith("/admin/");
 
   return (
-    <div className="min-h-screen transition-colors duration-300">
+    <div className="min-h-screen flex flex-col transition-colors duration-300">
+      {/* Loads GA only after consent */}
+      <AnalyticsGate />
+
       {!isAdminRoute && <Navbar />}
-      <AnimatedRoutes />
+
+      <main className="flex-1">
+        <AnimatedRoutes />
+      </main>
+
       {!isAdminRoute && <Footer />}
+
+      {/* Cookie banner on all pages */}
+      <SiteNotice />
     </div>
   );
 }
