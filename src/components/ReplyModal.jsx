@@ -20,12 +20,7 @@ export default function ReplyModal({
 
 Thank you for contacting me.
 
-I appreciate your message and will get back to you shortly.
-
-Best regards,
-Nitish Mandal
-
-https://www.nitishmandal.site`);
+I appreciate your message and will get back to you shortly.`);
     }
   }, [open, message]);
 
