@@ -142,6 +142,9 @@ export default function AdminInbox() {
     setReplyOpen(false);
     setSelectedMessage(null);
   }}
+  onSend={() => {
+    // Optional: refresh messages or show toast
+  }}
 />
     </section>
   );

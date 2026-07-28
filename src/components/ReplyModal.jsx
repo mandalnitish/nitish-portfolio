@@ -39,23 +39,42 @@ https://www.nitishmandal.site`);
     try {
       setSending(true);
 
-      const response = await fetch("/api/sendReply", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: message.email,
-          subject,
-          message: body,
-        }),
-      });
+      const API =
+  import.meta.env.DEV
+    ? "https://nitish-portfolio-xi-ten.vercel.app/api/sendReply"
+    : "/api/sendReply";
 
-      const data = await response.json();
+const response = await fetch(API, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    to: message.email,
+    subject,
+    message: body,
+  }),
+});
 
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || "Unable to send email.");
-      }
+      let data = {};
+
+try {
+  data = await response.json();
+} catch {
+  // Ignore empty response body
+}
+
+if (!response.ok) {
+  throw new Error(
+    data.message || `Server Error (${response.status})`
+  );
+}
+
+if (!data.success) {
+  throw new Error(
+    data.message || "Unable to send email."
+  );
+}
 
       alert("✅ Email sent successfully.");
 
