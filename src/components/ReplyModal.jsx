@@ -15,6 +15,7 @@ export default function ReplyModal({
   useEffect(() => {
     if (open && message) {
       setSubject("Re: Thank you for contacting me");
+
       setBody(`Hello ${message.name || ""},
 
 Thank you for contacting me.
@@ -39,45 +40,44 @@ https://www.nitishmandal.site`);
     try {
       setSending(true);
 
-      const API =
-  import.meta.env.DEV
-    ? "https://nitish-portfolio-xi-ten.vercel.app/api/sendReply"
-    : "/api/sendReply";
+      // Use Vercel API while developing locally
+      const API = import.meta.env.DEV
+        ? "https://nitish-portfolio-xi-ten.vercel.app/api/sendReply"
+        : "/api/sendReply";
 
-const response = await fetch(API, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    to: message.email,
-    subject,
-    message: body,
-  }),
-});
+      const response = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: message.email,
+          subject,
+          message: body,
+        }),
+      });
 
       let data = {};
 
-try {
-  data = await response.json();
-} catch {
-  // Ignore empty response body
-}
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
-if (!response.ok) {
-  throw new Error(
-    data.message || `Server Error (${response.status})`
-  );
-}
+      if (!response.ok) {
+        throw new Error(
+          data.message || `Server Error (${response.status})`
+        );
+      }
 
-if (!data.success) {
-  throw new Error(
-    data.message || "Unable to send email."
-  );
-}
+      if (!data.success) {
+        throw new Error(
+          data.message || "Unable to send email."
+        );
+      }
 
-      alert("✅ Email sent successfully.");
-
+      // Optional callback
       if (onSend) {
         onSend({
           to: message.email,
@@ -86,7 +86,16 @@ if (!data.success) {
         });
       }
 
+      // Clear form
+      setSubject("");
+      setBody("");
+
+      // Close modal
       onClose();
+
+      // Success
+      alert("✅ Email sent successfully.");
+
     } catch (err) {
       console.error(err);
       alert(err.message || "Failed to send email.");
@@ -125,7 +134,7 @@ if (!data.success) {
             <button
               onClick={onClose}
               disabled={sending}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50"
             >
               <FiX size={22} />
             </button>
@@ -133,15 +142,17 @@ if (!data.success) {
 
           {/* Body */}
           <div className="p-6 space-y-5">
+
             <div>
               <label className="block mb-2 font-medium">
                 Subject
               </label>
 
               <input
+                type="text"
                 value={subject}
-                onChange={(e) => setSubject(e.target.value)}
                 disabled={sending}
+                onChange={(e) => setSubject(e.target.value)}
                 className="w-full rounded-xl border border-gray-300 dark:border-gray-700 p-3 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
@@ -161,10 +172,11 @@ if (!data.success) {
             </div>
 
             <div className="flex justify-end gap-3">
+
               <button
                 onClick={onClose}
                 disabled={sending}
-                className="px-6 py-2 rounded-xl border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="px-6 py-2 rounded-xl border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -186,7 +198,9 @@ if (!data.success) {
                   </>
                 )}
               </button>
+
             </div>
+
           </div>
         </motion.div>
       </motion.div>
