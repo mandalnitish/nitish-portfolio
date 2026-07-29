@@ -14,7 +14,7 @@ export default function ReplyModal({
 
   useEffect(() => {
     if (open && message) {
-      setSubject("Re: Thank you for contacting me");
+      setSubject("Thank you for contacting me");
 
       setBody(`Hello ${message.name || ""},
 
