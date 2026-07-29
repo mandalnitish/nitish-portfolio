@@ -18,8 +18,6 @@ export default function ReplyModal({
 
       setBody(`Hello ${message.name || ""},
 
-Thank you for contacting me.
-
 I appreciate your message and will get back to you shortly.`);
     }
   }, [open, message]);
